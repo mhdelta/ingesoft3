@@ -32,7 +32,6 @@ public class UsuariosController {
 
     @GetMapping("/listar")
     public ResponseEntity<?> listar() {
-        System.out.println("llego hasta aqui");
         List<UsuariosDTO> res = usuarioService.listar();
 
         if (res == null || res.isEmpty()) {
