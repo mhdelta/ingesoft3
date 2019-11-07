@@ -1,13 +1,13 @@
--- Table: public."Check_in"
+-- Table: public.check_in
 
--- DROP TABLE public."Check_in";
+DROP TABLE public.check_in;
 
-CREATE TABLE public."Check_in"
+CREATE TABLE public.check_in
 (
     id integer NOT NULL,
     id_habitacion integer NOT NULL,
-    fecha_entrada character varying(30)[] COLLATE pg_catalog."default" NOT NULL,
-    fecha_salida character varying(30)[] COLLATE pg_catalog."default" NOT NULL,
+    fecha_entrada character(1)[] COLLATE pg_catalog."default" NOT NULL,
+    fecha_salida character(1)[] COLLATE pg_catalog."default" NOT NULL,
     estado boolean NOT NULL,
     id_detalle_prorroga integer,
     id_detalles_usuarios integer,
@@ -18,15 +18,14 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public."Check_in"
+ALTER TABLE public.check_in
     OWNER to postgres;
 
+-- Table: public.detalles_usuarios
 
--- Table: public."Detalles_usuarios"
+DROP TABLE public.detalles_usuarios;
 
--- DROP TABLE public."Detalles_usuarios";
-
-CREATE TABLE public."Detalles_usuarios"
+CREATE TABLE public.detalles_usuarios
 (
     id integer NOT NULL,
     id_check_in integer NOT NULL,
@@ -38,18 +37,17 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public."Detalles_usuarios"
+ALTER TABLE public.detalles_usuarios
     OWNER to postgres;
 
+-- Table: public.habitaciones
 
--- Table: public."Habitaciones"
+DROP TABLE public.habitaciones;
 
--- DROP TABLE public."Habitaciones";
-
-CREATE TABLE public."Habitaciones"
+CREATE TABLE public.habitaciones
 (
     id integer NOT NULL,
-    descripcion character varying(15)[] COLLATE pg_catalog."default" NOT NULL,
+    descripcion character varying(15) COLLATE pg_catalog."default" NOT NULL,
     precio_por_noche integer NOT NULL,
     disponible boolean NOT NULL,
     capacidad integer NOT NULL,
@@ -60,19 +58,19 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public."Habitaciones"
+ALTER TABLE public.habitaciones
     OWNER to postgres;
 
--- Table: public."Informaciones"
+-- Table: public.informaciones
 
--- DROP TABLE public."Informaciones";
+DROP TABLE public.informaciones;
 
-CREATE TABLE public."Informaciones"
+CREATE TABLE public.informaciones
 (
     id integer NOT NULL,
-    titulo character varying(200)[] COLLATE pg_catalog."default" NOT NULL,
-    descripcion character varying(350)[] COLLATE pg_catalog."default" NOT NULL,
-    url_foto character varying(500)[] COLLATE pg_catalog."default",
+    titulo character varying(200) COLLATE pg_catalog."default" NOT NULL,
+    descripcion character varying(350) COLLATE pg_catalog."default" NOT NULL,
+    url_foto character varying(500) COLLATE pg_catalog."default",
     CONSTRAINT "Informaciones_pkey" PRIMARY KEY (id)
 )
 WITH (
@@ -80,18 +78,18 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public."Informaciones"
+ALTER TABLE public.informaciones
     OWNER to postgres;
 
--- Table: public."Prorrogas"
+-- Table: public.prorrogas
 
--- DROP TABLE public."Prorrogas";
+DROP TABLE public.prorrogas;
 
-CREATE TABLE public."Prorrogas"
+CREATE TABLE public.prorrogas
 (
     id integer NOT NULL,
     id_check_in integer NOT NULL,
-    nueva_fecha_salida character varying(30)[] COLLATE pg_catalog."default",
+    nueva_fecha_salida character varying(30) COLLATE pg_catalog."default",
     cambia_habitacion boolean,
     id_nueva_habitacion integer,
     CONSTRAINT "Prorrogas_pkey" PRIMARY KEY (id)
@@ -101,18 +99,18 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public."Prorrogas"
+ALTER TABLE public.prorrogas
     OWNER to postgres;
 
--- Table: public."Servicio_habitacion"
+-- Table: public.servicio_habitacion
 
--- DROP TABLE public."Servicio_habitacion";
+DROP TABLE public.servicio_habitacion;
 
-CREATE TABLE public."Servicio_habitacion"
+CREATE TABLE public.servicio_habitacion
 (
     id integer NOT NULL,
     id_check_in integer NOT NULL,
-    fecha_compra character varying(30)[] COLLATE pg_catalog."default" NOT NULL,
+    fecha_compra character varying(30) COLLATE pg_catalog."default" NOT NULL,
     id_servicio integer NOT NULL,
     CONSTRAINT "Servicio_habitacion_pkey" PRIMARY KEY (id)
 )
@@ -121,18 +119,19 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public."Servicio_habitacion"
+ALTER TABLE public.servicio_habitacion
     OWNER to postgres;
 
--- Table: public."Servicios"
 
--- DROP TABLE public."Servicios";
+-- Table: public.servicios
 
-CREATE TABLE public."Servicios"
+DROP TABLE public.servicios;
+
+CREATE TABLE public.servicios
 (
     id integer NOT NULL,
-    descripcion character varying(350)[] COLLATE pg_catalog."default" NOT NULL,
-    titulo character varying(200)[] COLLATE pg_catalog."default" NOT NULL,
+    descripcion character varying(350) COLLATE pg_catalog."default" NOT NULL,
+    titulo character varying(200) COLLATE pg_catalog."default" NOT NULL,
     precio_unitario integer NOT NULL,
     CONSTRAINT "Servicios_pkey" PRIMARY KEY (id)
 )
@@ -141,20 +140,20 @@ WITH (
 )
 TABLESPACE pg_default;
 
-ALTER TABLE public."Servicios"
+ALTER TABLE public.servicios
     OWNER to postgres;
 
 -- Table: public.usuarios
 
--- DROP TABLE public.usuarios;
+DROP TABLE public.usuarios;
 
 CREATE TABLE public.usuarios
 (
-    nombre character varying(50)[] COLLATE pg_catalog."default" NOT NULL,
     id integer NOT NULL,
+    nombre character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    cc character varying(20) COLLATE pg_catalog."default" NOT NULL,
     edad integer NOT NULL,
-    cc character varying(20)[] COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT "Usuarios_pkey" PRIMARY KEY (id)
+    CONSTRAINT usuarios_pkey PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE

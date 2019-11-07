@@ -1,0 +1,145 @@
+<nb-card>
+    <nb-card-header>
+        <div class="row">
+            <div class="col-md-6">
+                Check In
+            </div>
+            <div class="col-md-6 pull-right">
+                <button nbButton status="primary" outline (click)="showReservations = true;">
+                    <nb-icon icon='table' pack="fa"></nb-icon>
+                    Ver reservas
+                </button>
+                <button nbButton status="primary" outline (click)="showReservations = false;">
+                    <nb-icon icon='user-plus' pack="fa"></nb-icon>
+                    Crear entrada
+                </button>
+            </div>
+        </div>
+    </nb-card-header>
+
+    <nb-card-body *ngIf="showReservations">
+        <ng2-smart-table [settings]="baseSettings" [source]="reservations">
+        </ng2-smart-table>
+    </nb-card-body>
+</nb-card>
+
+<nb-card *ngIf="!showReservations">
+    <nb-card-header>
+        Nueva entrada
+    </nb-card-header>
+    <nb-card-body>
+        <div class="topmargin">
+            <div class="row">
+                <div class="col-md-6">
+                    <button (click)="open(dialog, srcEnums.rooms)" nbButton
+                     [size]="'small'" 
+                     [status]="selectedRoom ? 'info' : 'danger'" 
+                     outline>
+                        <nb-icon icon='bed' pack="fa"></nb-icon>
+                        Seleccionar habitación
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <button (click)="open(dialog, srcEnums.users)" nbButton
+                     [size]="'small'" 
+                     [status]="selectedUsers.length > 0 ? 'info' :  'danger'" 
+                     outline>
+                        <nb-icon icon='user' pack="fa"></nb-icon>
+                        Agregar usuario
+                    </button>
+                </div>
+                <hr>
+            </div>
+            <div class="row">
+                <div class="col-md-4" *ngIf="selectedRoom">
+                    <b>Habitación seleccionada: </b> {{selectedRoom.description}}
+                </div>
+                <div class="col-md-4">
+                    <b>Entrada: </b> {{arriveDate}}
+                </div>
+                <div class="col-md-4">
+                    <b>Salida: </b> {{leaveDate}}
+                </div>
+            </div>
+            <hr>
+            <div class="row" *ngIf="selectedUsers.length > 0">
+                <div  
+                class="col-md-3" 
+                *ngFor="let user of selectedUsers"
+                (click)="idResponsable = user.id">
+                    <b>Id: </b>{{user.id}}<br>
+                    <b>Nombre: </b>{{user.name}}<br>
+                    <b>Edad: </b>{{user.age}} <br>
+                    <b class="center-align" style="color:#0095ff">{{idResponsable == user.id ? 'Responsable' : ''}}</b><br>
+                    <nb-icon style="font-size: 1rem;" (click)="deleteUser(user)" status="danger" icon='trash' pack="fa"></nb-icon>
+                </div> 
+            </div>
+            <div class="row" *ngIf="selectedRoom && selectedUsers.length > 0">
+                <button nbButton status="success" (click)="open(confirmCheckDialog, 'confirm')">
+                    <nb-icon icon='plus' pack="fa"></nb-icon>
+                    Crear entrada
+                </button>
+            </div>
+        </div>
+    </nb-card-body>
+</nb-card>
+
+
+<ng-template #dialog let-data let-ref="dialogRef">
+    <nb-card>
+        <nb-card-header>{{data.title}}</nb-card-header>
+        <nb-card-body>
+            <ng2-smart-table 
+                [settings]="data.settings" 
+                [source]="data.data"
+                (userRowSelect)="onRowSelect($event, data.src, data.dialog)">
+            </ng2-smart-table>
+        </nb-card-body>
+        <nb-card-footer>
+        <button nbButton (click)="ref.close()">Cerrar</button>
+    </nb-card-footer>
+    </nb-card>
+</ng-template>
+
+<ng-template #confirmCheckDialog let-ref="dialogRef">
+    <nb-card>
+        <nb-card-header>Confirmar información</nb-card-header>
+        <nb-card-body>
+            <div class="row">
+                <div class="col-md-4">
+                    <b>Habitación seleccionada: </b> {{selectedRoom.description}}
+                </div>
+                <div class="col-md-4">
+                    <b>Entrada: </b> {{arriveDate}}
+                </div>
+                <div class="col-md-4">
+                    <b>Salida: </b> {{leaveDate}}
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div  
+                class="col-md-3" 
+                *ngFor="let user of selectedUsers">
+                    <b>Id: </b>{{user.id}}<br>
+                    <b>Nombre: </b>{{user.name}}<br>
+                    <b>Edad: </b>{{user.age}} <br>
+                    <b class="center-align" style="color:#0095ff">{{idResponsable == user.id ? 'Responsable' : ''}}</b><br>
+                </div> 
+            </div>
+        </nb-card-body>
+        <nb-card-footer>
+            <div class="row">
+                <div class="col-md-2">
+                    <button nbButton status="danger" (click)="ref.close()">Cerrar</button>
+                </div>
+                <div class="col-md-8"></div>
+                <div class="col-md-2">
+                    <button nbButton status="primary" (click)="createArrival(); ref.close()">Aceptar</button>
+                </div>
+            </div>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>
+      
+      
